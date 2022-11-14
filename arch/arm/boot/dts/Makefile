@@ -976,15 +976,7 @@ dtb-$(CONFIG_ARCH_OXNAS) += \
 	ox810se-wd-mbwe.dtb \
 	ox820-cloudengines-pogoplug-series-3.dtb
 dtb-$(CONFIG_ARCH_QCOM) += \
-	qcom-msm8974-amazon-apollo-v2.dtb \
-	qcom-msm8974-fairphone-fp2.dtb \
-	qcom-msm8974-lge-nexus5-hammerhead.dtb \
-	qcom-msm8974-samsung-hlte.dtb \
-	qcom-msm8974-samsung-klte.dtb \
-	qcom-msm8974-sony-xperia-amami.dtb \
-	qcom-msm8974-sony-xperia-castor.dtb \
-	qcom-msm8974-sony-xperia-sirius.dtb \
-	qcom-msm8974-sony-xperia-honami.dtb
+	qcom-msm8974-amazon-apollo-v2.dtb
 dtb-$(CONFIG_ARCH_RDA) += \
 	rda8810pl-orangepi-2g-iot.dtb \
 	rda8810pl-orangepi-i96.dtb
