@@ -406,13 +406,13 @@
  // fertig
 	i2c@f9967000 {
 
-		tmp103_sensor: case_sensor@70 {
+		tmp103_sensor0: case_sensor@70 {
             		reg = <0x70>;
             		type = "tmp103";
             		compatible = "ti,tmp103";
         	};
 
-        	tmp103_sensor: case_sensor@71 {
+        	tmp103_sensor1: case_sensor@71 {
             		reg = <0x71>;
             		type = "tmp103";
             		compatible = "ti,tmp103";
@@ -455,7 +455,7 @@
 			
 			reg = <0x2c>;
 			
-			enable-supply = <&backlight_vddio>;
+			//enable-supply = <&backlight_vddio>;
 
 			dev-ctrl = /bits/ 8 <0x65>;
 			init-brt = /bits/ 8 <0x65>;
@@ -566,6 +566,17 @@
 
 		mdp@fd900000 {
 			status = "ok";
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@1 {
+					reg = <1>;
+					mdp5_intf2_out: endpoint {
+					remote-endpoint = <&dsi1_in>;
+						};
+					};
+				};	
 		};
 
 		dsi@fd922800 {
@@ -584,13 +595,13 @@
 			ports {
 				port@1 {
 					endpoint {
-						remote-endpoint = <&panel_in>;
+						remote-endpoint = <&panel0_in>;
 						data-lanes = <2 1 0 3>;
 					};
 				};
 			};
 
-			panel: panel@0 {
+			panel_primary: panel@0 {
 				reg = <0>;
 				compatible = "jdi,qhd-apollo";
 
@@ -604,7 +615,7 @@
 				backlight = <&lp8567_wled>;
 
 				port {
-					panel_in: endpoint {
+					panel0_in: endpoint {
 						remote-endpoint = <&dsi0_out>;
 					};
 				};
@@ -625,10 +636,10 @@
 			interrupt-parent = <&mdss>;
 			interrupts = <5 0>;
 
-			assigned-clocks = <&gcc BYTE1_CLK_SRC>,
-					<&gcc PCLK1_CLK_SRC>;
-			assigned-clock-parents = <&dsi0_phy 0>,
-					<&dsi0_phy 1>;
+			assigned-clocks = <&gcc BYTE0_CLK_SRC>,
+					<&gcc PCLK0_CLK_SRC>;
+			assigned-clock-parents = <&dsi_phy0 0>,
+					<&dsi_phy0 1>;
 
 			clocks = <&mmcc MDSS_MDP_CLK>,
 			<&mmcc MDSS_AHB_CLK>,
@@ -661,14 +672,21 @@
 				port@1 {
 				reg = <1>;
 					dsi1_out: endpoint {
-						remote-endpoint = <&jdi1_in>;
+						remote-endpoint = <&panel1_in>;
 						data-lanes = <2 1 0 3>;
 					};
 				};
 			};
 		
-			panel: panel@0 {
+			panel_secondary: panel@0 {
 				compatible = "jdi,qhd-apollo";
+				
+				port {
+					panel1_in: endpoint {
+						remote-endpoint = <&dsi1_out>;
+					};
+				};
+
 			};
 		};
 
@@ -707,7 +725,7 @@
 
 		reg = <0>;
 
-		pp3300-supply = <&lcd_pp3300>;
+		//pp3300-supply = <&lcd_pp3300>;
 		//vcc-supply = <&reg_lcd_vcc>;
 		//vddio-supply = <&reg_lcd_vddio>;		
 		
@@ -764,7 +782,7 @@
 			};
 		};
 	};
-};*/
+};
 
 /*&dsi1_phy {
 	status = "okay";
