@@ -60,10 +60,20 @@
 		};
 	};
 
+	usb2_otg_sw: regulator-tpd4s214 {
+		compatible = "regulator-fixed";
+		regulator-name = "usb2_otg_sw";
+		gpio = <&pm8941_gpios 18 0>;
+		vin-supply = <&pm8941_5v>;
+		startup-delay-us = <17000>;
+		enable-active-high;
+	};
+
 	smd {
 		rpm {
 			rpm_requests {
 				pm8841-regulators {
+                    status = "okay";
 					s1 {
 						regulator-min-microvolt = <675000>;
 						regulator-max-microvolt = <1050000>;
@@ -86,6 +96,8 @@
 				};
 
 				pm8941-regulators {
+					status = "okay";
+
 					vdd_l1_l3-supply = <&pm8941_s1>;
 					vdd_l2_lvs1_2_3-supply = <&pm8941_s3>;
 					vdd_l4_l11-supply = <&pm8941_s1>;
@@ -261,11 +273,7 @@
 };
 
 &soc {
-	serial@f991e000 {
-		status = "ok";
-	};
-
-        /*qcom,qcrypto1@fd440000 {
+    /*qcom,qcrypto1@fd440000 {
 		status = "disable";
 	};*/
 
@@ -289,8 +297,9 @@
 
 		phys = <&usb_hs1_phy>;
 		phy-select = <&tcsr 0xb000 0>;
+		//extcon = <&usb_id>, <&usb_id>;
 		extcon = <&smbb>, <&usb_id>;
-		vbus-supply = <&chg_otg>;
+		vbus-supply = <&usb2_otg_sw>;
 
 		hnp-disable;
 		srp-disable;
@@ -405,7 +414,7 @@
 
  // fertig
 	i2c@f9967000 {
-
+		status = "okay";
 		tmp103_sensor0: case_sensor@70 {
             		reg = <0x70>;
             		type = "tmp103";
@@ -449,7 +458,7 @@
 			ti,lp855x-cont-splash-enabled = <1>;
 		};*/
 
-		lp8567_wled: backlight@2c  {
+		lp8557_wled: backlight@2c  {
 			compatible = "ti,lp8557";
 			power-supply = <&pm8941_lvs1>;
 			
@@ -469,7 +478,7 @@
 				rom-val = /bits/ 8 <0xff>;
 			};
 		};	
-        };
+    };
 
 	pinctrl@fd510000 {
 		blsp1_uart2_pin_a: blsp1-uart2-pin-active {
@@ -605,14 +614,16 @@
 				reg = <0>;
 				compatible = "jdi,qhd-apollo";
 
+				right = <&panel_secondary>;
+
 				enable-gpios = <&msmgpio 19 GPIO_ACTIVE_HIGH>;
-				reset-gpios = <&msmgpio 19 GPIO_ACTIVE_HIGH>;
+				reset-gpios = <&pm8941_gpios 19 GPIO_ACTIVE_HIGH>;
 				lcdenable-gpios = <&msmgpio 0 GPIO_ACTIVE_HIGH>;
 				lcdmbist-gpios = <&msmgpio 1 GPIO_ACTIVE_HIGH>;
 				//te-gpios = <&msmgpio 12 GPIO_ACTIVE_HIGH>;
 				
 				//power-supply = <&vreg_vsp>;
-				backlight = <&lp8567_wled>;
+				backlight = <&lp8557_wled>;
 
 				port {
 					panel0_in: endpoint {
